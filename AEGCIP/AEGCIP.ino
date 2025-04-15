@@ -1,6 +1,6 @@
-//Written by Dheer Parkih, Jude Cheng, and Michelle Tang, 2024
-//Arduino Enabled Gyroscopic Computer Interface Peripheral
-//Uses MPU9250 6-axis gyroscope and accelerometer
+// Written by Dheer Parkih, Jude Cheng, and Michelle Tang, 2024
+// Arduino Enabled Gyroscopic Computer Interface Peripheral
+// Uses MPU9250 6-axis gyroscope and accelerometer
 
 #include <MPU9250_asukiaaa.h>
 #include <SoftwareSerial.h> 
@@ -47,12 +47,12 @@ void loop() {
     aY = mySensor.accelY();
     aZ = mySensor.accelZ();
     aSqrt = mySensor.accelSqrt();
-    Serial.println("accelX: " + String(aX));
-    Serial.println("accelY: " + String(aY));
-    Serial.println("accelZ: " + String(aZ));
-    Serial.println("accelSqrt: " + String(aSqrt));
+    //Serial.println("accelX:" + String(aX));
+    //Serial.println("accelY: " + String(aY));
+    //Serial.println("accelZ:" + String(aZ));
+    //Serial.println("accelSqrt: " + String(aSqrt));
   } else {
-    Serial.println("Cannod read accel values " + String(result));
+    Serial.println("Cannot read accel values " + String(result));
   }
 
   result = mySensor.gyroUpdate();
@@ -60,51 +60,58 @@ void loop() {
     gX = mySensor.gyroX();
     gY = mySensor.gyroY();
     gZ = mySensor.gyroZ();
-    Serial.println("gyroX: " + String(gX));
-    Serial.println("gyroY: " + String(gY));
-    Serial.println("gyroZ: " + String(gZ));
+   //Serial.println("gyroX:" + String(gX));
+    //Serial.println("gyroY: " + String(gY));
+    //Serial.println("gyroZ: " + String(gZ));
 // Taking gyroscopic values and assigning them to a new variable for easier coding and reading
-    mX=gX;
-    mY=gY;
-    mZ=gZ;
+    //mX=gX;
+    //mY=gY;
+    //mZ=gZ;
 
-//Checking to see if the x movement is great enough to move the mouse
+// Checking to see if the x movement is great enough to move the mouse
    if (aX>0.4 || aX<-0.4){
-    while (mX>-5 && mX<5 ){
-      Mouse.move(0,(aX*10));
+    if (gX>-5 && gX<5 ){
+      Mouse.move(0, (aX * 10));  // Move mouse on X-axis
       aX = mySensor.accelX();
       aY = mySensor.accelY();
       aZ = mySensor.accelZ();
-      if(aX>0.1 || aX<-0.1){
-        Serial.print("sit");
-        break;
-      }
+      //if (aX > 0.1 || aX < -0.1) {
+        //Serial.print("sit");
+        //break;
+      //}
     }
+    // Print the mouse movement
+    //Serial.print("X Mouse movement: ");
+    //Serial.println(aX * 10);  // Print how much the X-axis moved
   }  
 
-//Checking to see if the Y movement is great enough to move the mouse
+// Checking to see if the Y movement is great enough to move the mouse
    if (aY>0.4 || aY<-0.4){
-    while (mY>-5 && mY<5 ){
-      Mouse.move((aY*10),0);
+    if (gY>-5 && gY<5 ){
+      Mouse.move((aY * 10), 0);  // Move mouse on Y-axis
       aX = mySensor.accelX();
       aY = mySensor.accelY();
       aZ = mySensor.accelZ();
-      if(aY>0.1 || aY<-0.1){
-        Serial.print("sit");
-        break;
-      }
+      //if (aY > 0.1 || aY < -0.1) {ååå
+        //Serial.print("sit");
+        //break;
+      //}
     }
+    // Print the mouse movement
+    //Serial.print("Mouse movement: Y-axis moved by ");
+    //Serial.println(aY * 10);  // Print how much the Y-axis moved
   }
 
-// make the mouse click
-    if(aZ<-1.5){
+// Make the mouse click
+    if (aZ < -1.5) {
+      //Serial.println("Left click");
       Mouse.press(MOUSE_LEFT);
       delay(100);
       Mouse.release(MOUSE_LEFT);
       delay(200);
     }
-
-    else if (mZ>220){
+    else if (gZ > 220) {
+      //Serial.println("Right click");
       Mouse.press(MOUSE_RIGHT);
       delay(100);
       Mouse.release(MOUSE_RIGHT);
@@ -116,11 +123,11 @@ void loop() {
   }
 
   /*result = mySensor.magUpdate();
-  /*if (result != 0) {
+  if (result != 0) {
     Serial.println("cannot read mag so call begin again");
     mySensor.beginMag();
     result = mySensor.magUpdate();
-  }/*
+  }
   if (result == 0) {
     mX = mySensor.magX();
     mY = mySensor.magY();
@@ -134,8 +141,7 @@ void loop() {
     //Serial.println("Cannot read mag values " + String(result));
   }*/
 
-  Serial.println("at " + String(millis()) + "ms");
-  Serial.println("");  // Add an empty line
+  //Serial.println("at " + String(millis()) + "ms");
+  //Serial.println("");  // Add an empty line
   delay(5);
 }
-// Bluetooth module code
